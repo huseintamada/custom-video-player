@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Video Player</title>
+    <style>
+        *,
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            max-width: 50%;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        video {
+            display: block;
+            width: 100%;
+        }
+
+        .video-component {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            padding: 10px 12px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            border: none;
+            padding: 10px;
+            font-weight: 800;
+            cursor: pointer;
+            font-size: 24px;
+            border-radius: 8px;
+        }
+
+        .btn-play {
+            background-color: green;
+            color: white;
+        }
+
+        .btn-minimaze {
+            background-color: #222;
+            color: white;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <video src="footage.mp4" controls type="video/mp4" width="720"></video>
+        <div class="video-component">
+            <button onclick="playVideo()" class="btn btn-play">Play</button>
+            <button onclick="pauseVideo()" class="btn btn-pause">Pause</button>
+            <button onclick="minimizeVideo()" class="btn btn-minimaze">Minimize</button>
+        </div>
+    </div>
+
+    <script>
+        const videoComponent = document.querySelector("video");
+        const videoControls = document.querySelector(".video-component");
+
+        function playVideo() {
+            videoComponent.play();
+        }
+
+        function pauseVideo() {
+            videoComponent.pause();
+        }
+
+        function minimizeVideo() {
+            videoComponent.requestPictureInPicture();
+        }
+
+        videoComponent.addEventListener('play', () => {
+            setTimeout(() => {
+                videoControls.classList.add('hidden');
+            }, 2000);
+        });
+
+        videoComponent.addEventListener('pause', () => {
+            videoControls.classList.remove('hidden');
+        });
+
+        videoComponent.addEventListener('mousemove', () => {
+            videoControls.classList.remove('hidden');
+            clearTimeout(hideControlsTimeout);
+            hideControlsTimeout = setTimeout(() => {
+                videoControls.classList.add('hidden');
+            }, 2000);
+        });
+
+        let hideControlsTimeout;
+    </script>
+</body>
+
+</html>
